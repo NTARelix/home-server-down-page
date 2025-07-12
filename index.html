@@ -17,6 +17,9 @@
                 requestAnimationFrame(() => rafLoop(cb))
             }
             function reduceDiffIncrements(acc, diff, increments) {
+                if (diff === 0) {
+                    return acc
+                }
                 const currentIncrement = increments[0]
                 if (!currentIncrement) {
                     return acc
@@ -31,8 +34,8 @@
                 const diff = Date.now() - downStart
                 const values = reduceDiffIncrements([], diff, timeIncrements)
                 timeNode.innerHTML = values
-                    .map((value, i) => value.toString() + (i === 1 ? timeIncrements[i].labelSingular : timeIncrements[i].labelPlural))
-                    .map((label) => `<div>${label}</div>`)
+                    .reverse()
+                    .map((value, i) => `<div>${value} ${i === 1 ? timeIncrements[i].labelSingular : timeIncrements[i].labelPlural}</div>`)
                     .join('\n')
             }
             addEventListener('DOMContentLoaded', () => {
