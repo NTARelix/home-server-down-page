@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Kevin Koshiol</title>
+        <script>
+            const downStart = 1752289550000
+            const timeIncrements = [
+                { labelPlural: 'milliseconds', labelSingular: 'millisecond', factor: 1000 },
+                { labelPlural: 'seconds', labelSingular: 'second', factor: 60 },
+                { labelPlural: 'minutes', labelSingular: 'minute', factor: 60 },
+                { labelPlural: 'hours', labelSingular: 'hour', factor: 60 },
+                { labelPlural: 'days', labelSingular: 'day', factor: 24 },
+                { labelPlural: 'weeks', labelSingular: 'week', factor: 7 },
+            ]
+            function rafLoop(cb) {
+                cb()
+                requestAnimationFrame(() => rafLoop(cb))
+            }
+            function reduceDiffIncrements(acc, diff, increments) {
+                const currentIncrement = increments[0]
+                if (!currentIncrement) {
+                    return acc
+                }
+                const value = diff % currentIncrement.factor
+                const nextDiff = (diff - value) / currentIncrement.factor
+                acc.push(value)
+                return reduceDiffIncrements(acc, nextDiff, increments.slice(1))
+            }
+            function render() {
+                const timeNode = document.getElementById('time')
+                const diff = Date.now() - downStart
+                const values = reduceDiffIncrements([], diff, timeIncrements)
+                timeNode.innerHTML = values
+                    .map((value, i) => value.toString() + (i === 1 ? timeIncrements[i].labelSingular : timeIncrements[i].labelPlural))
+                    .map((label) => `<div>${label}</div>`)
+                    .join('\n')
+            }
+            addEventListener('DOMContentLoaded', () => {
+                rafLoop(render)
+            })
+        </script>
+    </head>
+    <body>
+        <p>
+            My home server has been acting up, so I'm running some tests that involve disabling all of the usual self-hosted services.
+            This could take a while.
+            Come back in a few days or weeks.
+        </p>
+        <p>Down for:</p>
+        <div id="time"></div>
+        <p>
+            <img src="/down.png" alt="A robot holding a wrench and a sign, standing in front of a server rack. The sign says down for maintenance.">
+        </p>
+    </body>
+</html>
