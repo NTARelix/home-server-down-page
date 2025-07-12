@@ -34,7 +34,7 @@
                 const diff = Date.now() - downStart
                 const values = reduceDiffIncrements([], diff, timeIncrements)
                 timeNode.innerHTML = values
-                    .map((value, i) => `<div>${value} ${i === 1 ? timeIncrements[i].labelSingular : timeIncrements[i].labelPlural}</div>`)
+                    .map((value, i) => `<div>${value} ${value === 1 ? timeIncrements[i].labelSingular : timeIncrements[i].labelPlural}</div>`)
                     .reverse()
                     .join('\n')
             }
