@@ -33,7 +33,7 @@
                 const timeNode = document.getElementById('time')
                 const diff = Date.now() - downStart
                 const values = reduceDiffIncrements([], diff, timeIncrements)
-                timeNode.innerHTML = values
+                timeNode.innerHTML = '<div>Down for:</div>\n` + values
                     .map((value, i) => `<div>${value} ${value === 1 ? timeIncrements[i].labelSingular : timeIncrements[i].labelPlural}</div>`)
                     .reverse()
                     .join('\n')
@@ -49,8 +49,7 @@
             This could take a while.
             Come back in a few days or weeks.
         </p>
-        <p>Down for:</p>
-        <div id="time"></div>
+        <p id="time"></p>
         <p>
             <img
                 src="down.png"
